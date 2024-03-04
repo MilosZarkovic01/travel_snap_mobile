@@ -1,0 +1,34 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: travel-snap
+  datasource:
+    username: ${POSTGRES_USERNAME:admin}
+    password: ${POSTGRES_PASSWORD:password}
+    url: ${POSTGRES_URL:jdbc:postgresql://localhost:5432/travel_snap}
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: 'true'
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+jwt:
+  secret-key: ${SECRET_KEY:VCinmKpfoFsGBQmBlJet9RLamlZQJa2i}
+  prefix: 'Bearer '
+  header: 'Authorization'
+  expiration-time: 6000 # in seconds
+  refresh-token-expiration-time: 86400 # in seconds
+
+ignored-paths: /auth/register, /auth/login
+
+cors:
+  allowed-methods: '*'
+  allowed-headers: '*'
+  exposed-headers: 'Authorization'
+  allowed-credentials: true
+  max-age: 3600
