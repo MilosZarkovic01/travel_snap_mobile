@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +35,7 @@ public class PostServiceImpl implements PostService {
         post.setDescription(postRequest.description());
         post.setImageUrl(postRequest.imageUrl());
         post.setDate(postRequest.date());
+        post.setNumberOfLikes(0);
 
         User user = new User();
         user.setId(postRequest.userId());
@@ -77,5 +79,16 @@ public class PostServiceImpl implements PostService {
     public void deletePost(Long id) {
         postRepository.deleteById(id);
         log.info("Post with id {} is deleted", id);
+    }
+
+    @Override
+    public List<PostDto> getOthersPosts(Long id) {
+        List<Post> allPosts = postRepository.findAll();
+
+        List<Post> othersPosts = allPosts.stream()
+                .filter(post -> post.getUser().getId() != id)
+                .collect(Collectors.toList());
+
+        return postMapper.postsToPostsDto(othersPosts);
     }
 }

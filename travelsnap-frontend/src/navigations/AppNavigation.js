@@ -11,6 +11,8 @@ import Signup from '../screens/SignUp/SignUp';
 import NewPost from '../screens/NewPost/NewPost';
 import CameraComponent from '../screens/Camera/CameraComponent';
 import NewAlbum from '../screens/NewAlbum/NewAlbum';
+import AllPosts from '../screens/AllPosts/AllPosts';
+
 
 const Stack = createStackNavigator();
 
@@ -34,6 +36,7 @@ function MainNavigator() {
       <Stack.Screen name='NewPost' component={NewPost} />
       <Stack.Screen name='Camera' component={CameraComponent} />
       <Stack.Screen name='NewAlbum' component={NewAlbum} />
+      <Stack.Screen name='AllPosts' component={AllPosts} />
     </Stack.Navigator>
   )
 }

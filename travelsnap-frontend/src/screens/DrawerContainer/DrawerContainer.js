@@ -18,6 +18,14 @@ export default function DrawerContainer(props) {
           }}
         />
         <MenuButton
+          title="OTHERS POSTS"
+          source={require("../../../assets/icons/search.png")}
+          onPress={() => {
+            navigation.navigate("AllPosts");
+            navigation.closeDrawer();
+          }}
+        />
+        <MenuButton
           title="CREATE NEW POST"
           source={require("../../../assets/icons/post.png")}
           onPress={() => {

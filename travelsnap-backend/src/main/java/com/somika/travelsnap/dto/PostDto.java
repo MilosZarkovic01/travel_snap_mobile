@@ -17,5 +17,6 @@ public class PostDto {
     private String description;
     private String imageUrl;
     private LocalDate date;
+    private Integer numberOfLikes;
     private MapLocationDto mapLocation;
 }

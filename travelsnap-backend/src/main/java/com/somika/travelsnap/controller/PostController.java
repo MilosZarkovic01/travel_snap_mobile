@@ -33,11 +33,16 @@ public class PostController {
 
     @PutMapping("/{id}")
     public void updatePost(@PathVariable Long id, @RequestBody PostUpdateRequestDto request) {
-        postService.updatePost(id,request);
+        postService.updatePost(id, request);
     }
 
     @DeleteMapping("/{id}")
     public void deletePost(@PathVariable Long id) {
         postService.deletePost(id);
+    }
+
+    @GetMapping("/{id}/others-posts")
+    public List<PostDto> getOthersPosts(@PathVariable Long id) {
+        return postService.getOthersPosts(id);
     }
 }
