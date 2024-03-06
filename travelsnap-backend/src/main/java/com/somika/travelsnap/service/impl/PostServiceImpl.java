@@ -105,19 +105,27 @@ public class PostServiceImpl implements PostService {
                 ));
 
         if (likeRepository.existsByUserIdAndPostId(userId, postId)) {
-            throw new RuntimeException("Post is already liked by the same user!");
+            likeRepository.deleteByUserIdAndPostId(userId, postId);
+            post.setNumberOfLikes(post.getNumberOfLikes() - 1);
+        } else {
+            Optional<User> user = userRepository.findById(userId);
+
+            Like like = Like.builder()
+                    .user(user.get())
+                    .post(post)
+                    .build();
+
+            likeRepository.save(like);
+
+            post.getLikes().add(like);
+            post.setNumberOfLikes(post.getNumberOfLikes() + 1);
         }
-
-        Optional<User> user = userRepository.findById(userId);
-
-        Like like = Like.builder()
-                .user(user.get())
-                .post(post)
-                .build();
-
-        likeRepository.save(like);
-
-        post.getLikes().add(like);
         postRepository.save(post);
+
+    }
+
+    @Override
+    public boolean isPostLiked(Long postId, Long userId) {
+        return likeRepository.existsByUserIdAndPostId(userId, postId);
     }
 }

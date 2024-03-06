@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from "react";
+import React, { useLayoutEffect, useState, useEffect } from "react";
 import { ScrollView, Text, View, Image, Modal, TextInput, TouchableOpacity } from "react-native";
 import { Button, Icon } from 'react-native-elements';
 import styles from "./styles";
@@ -17,24 +17,33 @@ export default function PostDetails(props) {
   const [description, setDescription] = useState(route.params?.item.description);
   const [likes, setLikes] = useState(route.params?.item.numberOfLikes);
   const [isModalVisible, setModalVisible] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
   const id = route.params?.item.id;
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerTransparent: "true",
-      headerLeft: () => (
-        <BackButton
-          onPress={() => {
-            navigation.goBack();
-          }}
-        />
-      ),
-      headerRight: () => <View />,
-    });
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = await AsyncStorage.getItem('token');
+        const userId = await AsyncStorage.getItem('id');
+
+        const response = await axios.get(
+          `${environment.apiUrl}/posts/is-liked/${id}/${userId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+        );
+        setIsLiked(response.data);
+      } catch (error) {
+        console.error('Error checking if post is liked:', error);
+      }
+    };
+    fetchData();
   }, []);
 
   const handleUpdate = async () => {
@@ -81,7 +90,6 @@ export default function PostDetails(props) {
       const token = await AsyncStorage.getItem('token');
       const userId = await AsyncStorage.getItem('id');
 
-
       const requestBody = {
         userId: Number(userId),
         postId: id
@@ -95,10 +103,15 @@ export default function PostDetails(props) {
           }
         }
       );
-
-      setLikes(likes + 1);
+      if (isLiked) {
+        setLikes(likes - 1);
+        setIsLiked(false);
+      } else {
+        setLikes(likes + 1);
+        setIsLiked(true);
+      }
     } catch (error) {
-      alert('You already liked the post!');
+      console.error('Error liking post:', error);
     }
   };
 
@@ -130,9 +143,9 @@ export default function PostDetails(props) {
           <View style={styles.infoContainer}>
             <Text>{likes}  </Text>
             <Icon
-              name='heart'
+              name={isLiked ? 'heart' : 'heart-o'} // Promena ikone u zavisnosti da li je post lajkovan
               type='font-awesome'
-              color='#f50'
+              color={isLiked ? '#f50' : '#000'} // Promena boje ikone u zavisnosti da li je post lajkovan
               onPress={handleLike}
             />
           </View>

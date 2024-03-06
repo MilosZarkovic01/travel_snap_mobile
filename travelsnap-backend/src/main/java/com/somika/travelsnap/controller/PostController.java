@@ -48,7 +48,12 @@ public class PostController {
     }
 
     @PutMapping("/like")
-    public void likePost(@RequestBody LikeRequestDto likeRequest){
+    public void likePost(@RequestBody LikeRequestDto likeRequest) {
         postService.likePost(likeRequest);
+    }
+
+    @GetMapping("/is-liked/{postId}/{userId}")
+    public boolean isPostLiked(@PathVariable("postId") Long postId, @PathVariable("userId") Long userId) {
+        return postService.isPostLiked(postId, userId);
     }
 }

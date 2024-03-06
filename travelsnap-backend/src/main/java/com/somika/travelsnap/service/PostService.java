@@ -21,4 +21,6 @@ public interface PostService {
     List<PostDto> getOthersPosts(Long id);
 
     void likePost(LikeRequestDto likeRequest);
+
+    boolean isPostLiked(Long postId, Long userId);
 }

@@ -43,6 +43,9 @@ public class Post {
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Like> likes;
 
+    @Column(nullable = false)
+    private Integer numberOfLikes;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
