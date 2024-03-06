@@ -18,5 +18,6 @@ public interface PostMapper {
 
     @Mapping(target = "mapLocation.latitude", source = "post.mapLocation.lat")
     @Mapping(target = "mapLocation.longitude", source = "post.mapLocation.lng")
+    @Mapping(target = "numberOfLikes", expression = "java(post.getLikes().size())")
     PostDto postToPostDto(Post post);
 }

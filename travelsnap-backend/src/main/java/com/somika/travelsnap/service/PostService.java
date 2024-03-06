@@ -1,6 +1,7 @@
 package com.somika.travelsnap.service;
 
 import com.somika.travelsnap.dto.PostDto;
+import com.somika.travelsnap.dto.request.LikeRequestDto;
 import com.somika.travelsnap.dto.request.PostRequestDto;
 import com.somika.travelsnap.dto.request.PostUpdateRequestDto;
 import com.somika.travelsnap.model.Post;
@@ -18,4 +19,6 @@ public interface PostService {
     void deletePost(Long id);
 
     List<PostDto> getOthersPosts(Long id);
+
+    void likePost(LikeRequestDto likeRequest);
 }

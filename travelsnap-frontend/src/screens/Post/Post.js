@@ -1,6 +1,6 @@
 import React, { useLayoutEffect, useState } from "react";
 import { ScrollView, Text, View, Image, Modal, TextInput, TouchableOpacity } from "react-native";
-import { Button } from 'react-native-elements';
+import { Button, Icon } from 'react-native-elements';
 import styles from "./styles";
 import BackButton from "../../components/BackButton/BackButton";
 import axios from 'axios';
@@ -15,8 +15,8 @@ export default function PostDetails(props) {
 
   const [title, setTitle] = useState(route.params?.item.title);
   const [description, setDescription] = useState(route.params?.item.description);
+  const [likes, setLikes] = useState(route.params?.item.numberOfLikes);
   const [isModalVisible, setModalVisible] = useState(false);
-
   const id = route.params?.item.id;
 
   const toggleModal = () => {
@@ -76,9 +76,35 @@ export default function PostDetails(props) {
     }
   };
 
+  const handleLike = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      const userId = await AsyncStorage.getItem('id');
+
+
+      const requestBody = {
+        userId: Number(userId),
+        postId: id
+      };
+
+      await axios.put(
+        `${environment.apiUrl}/posts/like`, requestBody,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+
+      setLikes(likes + 1);
+    } catch (error) {
+      alert('You already liked the post!');
+    }
+  };
+
   return (
     <View style={styles.container}>
-      <ScrollView >
+      <ScrollView>
         <View style={styles.carouselContainer}>
           <View style={styles.carousel}>
             <TouchableOpacity onPress={toggleModal}>
@@ -100,6 +126,15 @@ export default function PostDetails(props) {
               source={require("../../../assets/icons/calendar.png")}
             />
             <Text style={styles.infoRecipe}>{route.params?.item.date} </Text>
+          </View>
+          <View style={styles.infoContainer}>
+            <Text>{likes}  </Text>
+            <Icon
+              name='heart'
+              type='font-awesome'
+              color='#f50'
+              onPress={handleLike}
+            />
           </View>
           <TextInput
             style={styles.infoDescriptionRecipe}

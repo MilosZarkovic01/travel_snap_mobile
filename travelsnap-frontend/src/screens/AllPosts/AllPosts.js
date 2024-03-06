@@ -5,8 +5,6 @@ import MenuImage from "../../components/MenuImage/MenuImage";
 import { environment } from "../../environments/environment.prod";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from "axios";
-import { Button } from 'react-native-elements';
-
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 
 

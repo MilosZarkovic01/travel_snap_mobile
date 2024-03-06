@@ -1,6 +1,7 @@
 package com.somika.travelsnap.controller;
 
 import com.somika.travelsnap.dto.PostDto;
+import com.somika.travelsnap.dto.request.LikeRequestDto;
 import com.somika.travelsnap.dto.request.PostRequestDto;
 import com.somika.travelsnap.dto.request.PostUpdateRequestDto;
 import com.somika.travelsnap.model.Post;
@@ -44,5 +45,10 @@ public class PostController {
     @GetMapping("/{id}/others-posts")
     public List<PostDto> getOthersPosts(@PathVariable Long id) {
         return postService.getOthersPosts(id);
+    }
+
+    @PutMapping("/like")
+    public void likePost(@RequestBody LikeRequestDto likeRequest){
+        postService.likePost(likeRequest);
     }
 }
