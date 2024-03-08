@@ -49,7 +49,7 @@ export default function AllPosts(props) {
     }, []);
 
     const onPressPost = (item) => {
-        navigation.navigate("Post", { item });
+        navigation.navigate("OthersPostDetails", { item });
     };
 
     const renderPosts = ({ item }) => {
